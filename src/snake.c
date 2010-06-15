@@ -79,8 +79,8 @@ void check_timeouts()
 
 	for(i = 0; i < MAX_X; i++)
 		for(j = 0; j < MAX_Y; j++) {
-			/*if(ground[i][j] == WALL || ground[i][j] == GROUND)
-				break;*/
+			if(ground[i][j] == WALL || ground[i][j] == GROUND)
+				break;
 			timeout[i][j]--;
 			if(!timeout[i][j]) {
 				type = ground[i][j];
