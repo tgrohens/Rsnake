@@ -27,6 +27,7 @@ char *path = [[NSSearchPathForDirectoriesInDomains(NSApplicationDirectory, NSUse
 #define MALUS_PTS 150
 
 #define NXT_LVL_PTS 1000
+#define MAX_LVL 30
 
 int score;
 int cur_lvl;
