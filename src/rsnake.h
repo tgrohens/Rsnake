@@ -13,6 +13,11 @@
 #include <stdlib.h>
 #include <time.h>
 
+//#ifdef __OBJC__
+
+char *path = [[NSSearchPathForDirectoriesInDomains(NSApplicationDirectory, NSUserDomainMask, YES) objectAtIndex:0] cStringUsingEncoding:NSASCIIStringEncoding];
+//#endif
+
 #define MAX_X 40
 #define MAX_Y 30
 #define PX_SIZE 16

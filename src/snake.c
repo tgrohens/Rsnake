@@ -7,21 +7,18 @@
 
 #include "rsnake.h"
 
-int rnd_max(int max)
-{
+int rnd_max(int max) {
 	return rand() % max;
 }
 
-void find_empty(int * x, int * y)
-{
+void find_empty(int *x, int *y) {
 	do {
 		*x = rnd_max(MAX_X);
 		*y = rnd_max(MAX_Y);
 	} while(ground[*x][*y] != GROUND);
 }
 
-void load_level(int lvl_nb)
-{
+void load_level(int lvl_nb) {
 	char fname[50];
 	FILE *lev;
 	int i, j, x, y;
@@ -71,8 +68,7 @@ void load_level(int lvl_nb)
 	add_head(10, 13); add_head(11, 13); add_head(12, 13); add_head(13, 13);
 }
 
-void check_timeouts()
-{
+void check_timeouts() {
 	Tile type;
 	int i, j;
 	int x, y;
@@ -94,8 +90,7 @@ void check_timeouts()
 }
 
 /** The params should contain 0, 1 or -1. */
-void move(int x, int y)
-{
+void move(int x, int y) {
 	int new_x = (snake->x + x);
 	int new_y = (snake->y + y);
 

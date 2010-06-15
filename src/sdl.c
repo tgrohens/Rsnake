@@ -19,19 +19,17 @@ Uint32 col_malus;
 Uint32 col_snake_hd;
 Uint32 col_snake;
 
-void fill_colors()
-{
-	col_wall = SDL_MapRGB(screen->format, 50, 100, 200);
-	col_ground = SDL_MapRGB(screen->format, 200, 100, 0);
-	col_bonus = SDL_MapRGB(screen->format, 0, 255, 0);
+void fill_colors() {
+	col_wall = SDL_MapRGB(screen->format, 128, 64, 0);
+	col_ground = SDL_MapRGB(screen->format, 0, 255, 0);
+	col_bonus = SDL_MapRGB(screen->format, 102, 204, 255);
 	col_malus = SDL_MapRGB(screen->format, 255, 0, 0);
 
-	col_snake_hd = SDL_MapRGB(screen->format, 255, 255, 255);
-	col_snake = SDL_MapRGB(screen->format, 0, 0, 0);
+	col_snake_hd = SDL_MapRGB(screen->format, 255, 128, 0);
+	col_snake = SDL_MapRGB(screen->format, 255, 255, 102);
 }
 
-void show_info()
-{
+void show_info() {
 	char info_txt[100];
 	SDL_Rect position;
 	SDL_Color white = { 255, 255, 255 };
@@ -51,8 +49,7 @@ void show_info()
 	SDL_BlitSurface(txt_surf, NULL, screen, &position);
 }
 
-void blit_all()
-{
+void blit_all() {
 	/* TODO: blit the score */
 
 	SDL_Surface *to_blit[MAX_X][MAX_Y];
