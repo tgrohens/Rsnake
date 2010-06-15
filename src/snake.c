@@ -34,8 +34,8 @@ void load_level(int lvl_nb)
 		quit_stuff();
 	}
 
-	for(i = 0; i < MAX_X; i++) {
-		for(j = 0; j < MAX_Y; j++) {
+	for(j = 0; j < MAX_Y; j++) {
+		for(i = 0; i < MAX_X; i++) {
 			c = getc(lev);
 			if(c == '#') ground[i][j] = WALL;
 			else ground[i][j] = GROUND;
@@ -98,6 +98,9 @@ void move(int x, int y)
 {
 	int new_x = (snake->x + x);
 	int new_y = (snake->y + y);
+
+	if(snake->next && snake->next->x == new_x && snake->next->y && new_y)
+		return; /* Impossible move */
 
 	if(new_x < 0) new_x = MAX_X -1; if(new_x >= MAX_X) new_x = 0;
 	if(new_y < 0) new_y = MAX_Y -1; if(new_y >= MAX_Y) new_y = 0;
