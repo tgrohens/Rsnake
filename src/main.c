@@ -35,6 +35,11 @@ void init_stuff()
 	no_pop = 0;
 }
 
+void win()
+{
+	//this is SDL
+}
+
 void die_and_score()
 {
 	if(--lives >= 0) {

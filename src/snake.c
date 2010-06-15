@@ -99,7 +99,7 @@ void move(int x, int y)
 	int new_x = (snake->x + x);
 	int new_y = (snake->y + y);
 
-	if(snake->next && snake->next->x == new_x && snake->next->y && new_y)
+	if(snake->next && snake->next->x == new_x && snake->next->y == new_y)
 		return; /* Impossible move */
 
 	if(new_x < 0) new_x = MAX_X -1; if(new_x >= MAX_X) new_x = 0;
@@ -187,6 +187,8 @@ int loop()
 
 		if(score >= NXT_LVL_PTS) {
 			cur_lvl++;
+			if(cur_lvl > MAX_LVL)
+				win();
 			load_level(cur_lvl);
 			score = 0;
 			lives += cur_lvl/3;
