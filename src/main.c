@@ -8,7 +8,8 @@
 #include "rsnake.h"
 
 /* Initialize everything */
-void init_stuff() {
+void init_stuff()
+{
 	/* First the SDL */
 	SDL_Init(SDL_INIT_VIDEO|SDL_INIT_TIMER);
 	screen = SDL_SetVideoMode(MAX_X*PX_SIZE, MAX_Y*PX_SIZE + TEXTZONE_SIZE, 32,
@@ -34,12 +35,13 @@ void init_stuff() {
 	no_pop = 0;
 }
 
-
-void win() {
+void win()
+{
 	//this is SDL
 }
 
-void die_and_score() {
+void die_and_score()
+{
 	if(--lives >= 0) {
 		load_level(cur_lvl);
 		return;
@@ -48,7 +50,8 @@ void die_and_score() {
 	quit_stuff();
 }
 
-void quit_stuff(int dummy) {
+void quit_stuff(int dummy)
+{
 	TTF_CloseFont(score_font);
 	TTF_CloseFont(info_font);
 	TTF_Quit();
@@ -60,7 +63,8 @@ void quit_stuff(int dummy) {
 	exit(0);
 }
 
-int main(int argc, char *argv[]) {
+int main(int argc, char *argv[]) /* May i know the point ? */
+{
 	signal(SIGINT, quit_stuff);
 	srand(time(NULL));
 

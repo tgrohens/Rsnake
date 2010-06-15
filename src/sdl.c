@@ -29,7 +29,8 @@ void fill_colors() {
 	col_snake = SDL_MapRGB(screen->format, 255, 255, 102);
 }
 
-void show_info() {
+void show_info()
+{
 	char info_txt[100];
 	SDL_Rect position;
 	SDL_Color white = { 255, 255, 255 };
@@ -49,7 +50,8 @@ void show_info() {
 	SDL_BlitSurface(txt_surf, NULL, screen, &position);
 }
 
-void blit_all() {
+void blit_all()
+{
 	/* TODO: blit the score */
 
 	SDL_Surface *to_blit[MAX_X][MAX_Y];

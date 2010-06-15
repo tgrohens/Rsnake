@@ -7,7 +7,8 @@
 
 #include "rsnake.h"
 
-void add_head(unsigned x, unsigned y) {
+void add_head(unsigned x, unsigned y)
+{
 	Snake * new = malloc(sizeof(Snake));
 	new->x = x;
 	new->y = y;
@@ -16,7 +17,8 @@ void add_head(unsigned x, unsigned y) {
 	snake = new;
 }
 
-void pop_tail() {
+void pop_tail()
+{
 	Snake * snk = snake;
 
 	while(snk->next->next != NULL)
@@ -26,14 +28,16 @@ void pop_tail() {
 	snk->next = NULL;
 }
 
-void free_snake() {
+void free_snake()
+{
 	while(snake->next != NULL) pop_tail();
 	free(snake);
 	snake = NULL;
 }
 
 /* The head is checked after for subtle collision checking reasons */
-int has_snake(unsigned x, unsigned y) {
+int has_snake(unsigned x, unsigned y)
+{
 	Snake * snk = snake;
 
 	snk = snk->next;
