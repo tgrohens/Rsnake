@@ -38,9 +38,9 @@ void show_info()
 	sprintf(info_txt, "NIVEAU : %2d SCORE : %4d VIES : %2d", cur_lvl, score, lives);
 	txt_surf = TTF_RenderText_Blended(info_font, info_txt, white);
 
-	position.x = 0; position.y = MAX_Y * PX_SIZE;
+	position.x = 0; position.y = MAX_HEI * PX_SIZE;
 
-	info_background = SDL_CreateRGBSurface(SDL_HWSURFACE, MAX_X*PX_SIZE,
+	info_background = SDL_CreateRGBSurface(SDL_HWSURFACE, MAX_LEN*PX_SIZE,
 			TEXTZONE_SIZE, 32, 0, 0, 0, 0);
 	SDL_FillRect(info_background, NULL, SDL_MapRGB(screen->format, 0, 0, 0));
 	SDL_BlitSurface(info_background, NULL, screen, &position);
@@ -54,14 +54,14 @@ void blit_all()
 {
 	/* TODO: blit the score */
 
-	SDL_Surface *to_blit[MAX_X][MAX_Y];
+	SDL_Surface *to_blit[MAX_LEN][MAX_HEI];
 	SDL_Rect position;
 	Uint32 color;
 	int i, j;
 
 	/* We blit the whole thing */
-	for(i = 0; i < MAX_X; i++) {
-		for(j = 0; j < MAX_Y; j++) {
+	for(i = 0; i < MAX_LEN; i++) {
+		for(j = 0; j < MAX_HEI; j++) {
 			position.x = i *PX_SIZE;
 			position.y = j *PX_SIZE;
 
@@ -88,10 +88,44 @@ void blit_all()
 	show_info();
 	SDL_Flip(screen);
 
-	for(i = 0; i < MAX_X; i++)
-		for(j = 0; j < MAX_Y; j++)
+	for(i = 0; i < MAX_LEN; i++)
+		for(j = 0; j < MAX_HEI; j++)
 			SDL_FreeSurface(to_blit[i][j]);
 
 	SDL_FreeSurface(txt_surf);
 	SDL_FreeSurface(info_background);
+}
+
+void handle_input() {
+	SDL_Event event;
+	while(SDL_PollEvent(&event))
+	{
+		switch (event.type)
+		{
+			case SDL_KEYDOWN:
+				kb.keys[event.key.keysym.sym] = 1;
+				curDir =kb.keys[SDLK_UP]?UP:
+				kb.keys[SDLK_RIGHT]?RIGHT:
+				kb.keys[SDLK_DOWN]?DOWN:
+				kb.keys[SDLK_LEFT]?LEFT:
+				curDir;
+				break;
+			case SDL_KEYUP:
+				kb.keys[event.key.keysym.sym] = 0;
+				break;
+			case SDL_QUIT:
+				kb.exit = 1;
+				break;
+			case SDL_MOUSEMOTION:
+				kb.mx = event.motion.x;
+				kb.my = event.motion.y;
+				break;
+			case SDL_MOUSEBUTTONDOWN:
+				kb.mbut[event.button.button-1] = 1;
+				break;
+			case SDL_MOUSEBUTTONUP:
+				kb.mbut[event.button.button-1] = 0;
+				break;
+		}
+	}
 }

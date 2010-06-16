@@ -12,11 +12,11 @@ int rnd_max(int max)
 	return rand() % max;
 }
 
-void find_empty(int *x, int *y)
+void find_empty(unsigned *x, unsigned *y)
 {
 	do {
-		*x = rnd_max(MAX_X);
-		*y = rnd_max(MAX_Y);
+		*x = rnd_max(MAX_LEN);
+		*y = rnd_max(MAX_HEI);
 	} while(ground[*x][*y] != GROUND);
 }
 
@@ -24,7 +24,7 @@ void load_level(int lvl_nb)
 {
 	char fname[50];
 	FILE *lev;
-	int i, j, x, y;
+	unsigned iLin, iCol, x, y;
 	char c;
 
 	sprintf(fname, PATH"lvls/level-%d.lvl", lvl_nb);
@@ -34,11 +34,11 @@ void load_level(int lvl_nb)
 		quit_stuff();
 	}
 
-	for(j = 0; j < MAX_Y; j++) {
-		for(i = 0; i < MAX_X; i++) {
+	for(iCol = 0; iCol < MAX_HEI; iCol++) {
+		for(iLin = 0; iLin < MAX_LEN; iLin++) {
 			c = getc(lev);
-			if(c == '#') ground[i][j] = WALL;
-			else ground[i][j] = GROUND;
+			if(c == '#') ground[iCol][iLin] = WALL;
+			else ground[iCol][iLin] = GROUND;
 		}
 		getc(lev); /* This should be a \n */
 	}
@@ -75,10 +75,10 @@ void check_timeouts()
 {
 	Tile type;
 	int i, j;
-	int x, y;
+	unsigned x, y;
 
-	for(i = 0; i < MAX_X; i++)
-		for(j = 0; j < MAX_Y; j++) {
+	for(i = 0; i < MAX_LEN; i++)
+		for(j = 0; j < MAX_HEI; j++) {
 			if(ground[i][j] == WALL || ground[i][j] == GROUND)
 				break;
 			timeout[i][j]--;
@@ -93,107 +93,80 @@ void check_timeouts()
 		}
 }
 
-/** The params should contain 0, 1 or -1. */
-void move(int x, int y)
-{
-	int new_x = (snake->x + x);
-	int new_y = (snake->y + y);
-
-	if(snake->next && snake->next->x == new_x && snake->next->y == new_y)
-		return; /* Impossible move */
-
-	if(new_x < 0) new_x = MAX_X -1; if(new_x >= MAX_X) new_x = 0;
-	if(new_y < 0) new_y = MAX_Y -1; if(new_y >= MAX_Y) new_y = 0;
-
-	add_head(new_x, new_y);
-
-
-	if(has_snake(new_x, new_y) == 1)
-		die_and_score();
-	else if(ground[new_x][new_y] == WALL)
-		die_and_score();
-
-	else if(ground[new_x][new_y] == BONUS) {
-		no_pop++;
-		score += BONUS_PTS;
-		ground[new_x][new_y] = GROUND;
-		timeout[new_x][new_y] = 0;
-
-		find_empty(&new_x, &new_y);
-		ground[new_x][new_y] = BONUS;
-		timeout[new_x][new_y] = rnd_max(45) + 5;
-
-	} else if(ground[new_x][new_y] == MALUS) {
-		no_pop += 4;
-		score -= MALUS_PTS;
-		ground[new_x][new_y] = GROUND;
-		timeout[new_x][new_y] = 0;
-
-		find_empty(&new_x, &new_y);
-		ground[new_x][new_y] = MALUS;
-		timeout[new_x][new_y] = rnd_max(45) + 5;
+/* No params, just use curDir */
+void move() {
+	int nx, ny;
+	switch (curDir) {
+		case RIGHT:
+			nx = snake->x+1;
+			ny = snake->y;
+			break;
+		case LEFT:
+			nx = snake->x-1;
+			ny = snake->y;
+			break;
+		case UP:
+			nx = snake->x;
+			ny = snake->y-1;
+			break;
+		case DOWN:
+			nx = snake->x;
+			ny = snake->y+1;
+			break;
 	}
 
+	if(snake->next && snake->next->x == nx && snake->next->y == ny)
+		return; /* Impossible move */
+
+	if(nx == -1) nx += MAX_LEN; if(nx == MAX_LEN) nx = 0;
+	if(ny == -1) ny += MAX_HEI; if(ny == MAX_HEI) ny = 0;
+
+	add_head(nx, ny);
+
+	check_collisions();
+	
 	if(!no_pop) pop_tail();
 	else no_pop--;
 }
 
+void check_collisions() {
+	if(ground[snake->x][snake->y] == WALL)
+		die_and_score();
+	
+	else if(ground[snake->x][snake->y] == BONUS) {
+		no_pop++;
+		score += BONUS_PTS;
+		ground[snake->x][snake->y] = GROUND;
+		timeout[snake->x][snake->y] = 0;
+		
+		find_empty(&snake->x, &snake->y);
+		ground[snake->x][snake->y] = BONUS;
+		timeout[snake->x][snake->y] = rnd_max(45) + 5;
+		
+	} else if(ground[snake->x][snake->y] == MALUS) {
+		no_pop += 4;
+		score -= MALUS_PTS;
+		ground[snake->x][snake->y] = GROUND;
+		timeout[snake->x][snake->y] = 0;
+		
+		find_empty(&snake->x, &snake->y);
+		ground[snake->x][snake->y] = MALUS;
+		timeout[snake->x][snake->y] = rnd_max(45) + 5;
+	}
+	
+}
 
-void auto_move()
+void loop()
 {
-	switch(default_dir) {
-	case UP:		move(0, -1); break;
-	case DOWN:		move(0, 1); break;
-	case LEFT:		move(-1, 0); break;
-	case RIGHT:		move(1, 0); break;
+	while(!kb.keys[SDLK_ESCAPE] && !kb.exit) {
+		check_timeouts();
+		handle_events(); //handles input, then moves
+		SDL_Delay(1000/BASE_FPS);
 	}
 }
 
-
-/* TODO: make auto-move, non blocking management of events */
-int loop()
-{
-	SDL_Event event;
-
-	while(42) {
-		SDL_WaitEvent(&event);
-		switch(event.type){
-
-		case SDL_QUIT:
-			quit_stuff(0);
-			break;
-
-		case SDL_KEYDOWN:
-			switch (event.key.keysym.sym) {
-			case SDLK_UP:
-				default_dir = UP; move(0, -1); break;
-			case SDLK_DOWN:
-				default_dir = DOWN; move(0, 1); break;
-			case SDLK_LEFT:
-				default_dir = LEFT; move(-1, 0); break;
-			case SDLK_RIGHT:
-				default_dir = RIGHT; move(1, 0); break;
-			default:
-				continue;
-				//auto_move();
-				break;
-			}
-			break;
-
-		default: continue;
-			//auto_move();
-		}
-		blit_all();
-
-		if(score >= NXT_LVL_PTS) {
-			cur_lvl++;
-			if(cur_lvl > MAX_LVL)
-				win();
-			load_level(cur_lvl);
-			score = 0;
-			lives += cur_lvl/3;
-		}
-
-		check_timeouts();
-	}
+void handle_events() {
+	handle_input();
+	move();
+	kb.keys[SDLK_UP] = kb.keys[SDLK_RIGHT] = kb.keys[SDLK_DOWN] = kb.keys[SDLK_LEFT] = 0; //we want the player to touch *again*, so we say it ain't typed.
 }

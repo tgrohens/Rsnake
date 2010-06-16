@@ -11,8 +11,8 @@
 void init_stuff()
 {
 	/* First the SDL */
-	SDL_Init(SDL_INIT_VIDEO|SDL_INIT_TIMER);
-	screen = SDL_SetVideoMode(MAX_X*PX_SIZE, MAX_Y*PX_SIZE + TEXTZONE_SIZE, 32,
+	SDL_Init(SDL_INIT_VIDEO);
+	screen = SDL_SetVideoMode(MAX_LEN*PX_SIZE, MAX_HEI*PX_SIZE + TEXTZONE_SIZE, 32,
 			SDL_HWSURFACE|SDL_DOUBLEBUF);
 	fill_colors();
 
@@ -22,7 +22,7 @@ void init_stuff()
     info_font = TTF_OpenFont(PATH"comic.ttf", 15);
     score_font = TTF_OpenFont(PATH"comic.ttf", 40);
 
-	default_dir = LEFT;
+	curDir = RIGHT;
 
 	snake = malloc(sizeof(Snake));
 	snake->next = NULL;
@@ -63,7 +63,7 @@ void quit_stuff(int dummy)
 	exit(0);
 }
 
-int main(int argc, char *argv[]) /* May i know the point ? */
+int main(int argc, char *argv[]) /* May i know the point ? */ //SDL WANTS IT OR DOESNT COMPILE DUMBASS
 {
 	signal(SIGINT, quit_stuff);
 	srand(time(NULL));
