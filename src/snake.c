@@ -127,7 +127,7 @@ void move() {
 }
 
 void check_collisions() {
-	int nx = snake->x, ny = snake->y;
+	unsigned nx = snake->x, ny = snake->y;
 	if(ground[nx][ny] == WALL)
 		die_and_score();
 	
