@@ -19,8 +19,8 @@ void init_stuff()
     SDL_WM_SetCaption("Rsnake_new 0.2-pre", NULL);
 
     TTF_Init();
-    info_font = TTF_OpenFont("comic.ttf", 15);
-    score_font = TTF_OpenFont("comic.ttf", 40);
+    info_font = TTF_OpenFont(PATH"comic.ttf", 15);
+    score_font = TTF_OpenFont(PATH"comic.ttf", 40);
 
 	default_dir = LEFT;
 

@@ -15,7 +15,8 @@
 
 //#ifdef __OBJC__
 
-char *path = [[NSSearchPathForDirectoriesInDomains(NSApplicationDirectory, NSUserDomainMask, YES) objectAtIndex:0] cStringUsingEncoding:NSASCIIStringEncoding];
+//char *path = [[NSSearchPathForDirectoriesInDomains(NSApplicationDirectory, NSUserDomainMask, YES) objectAtIndex:0] cStringUsingEncoding:NSASCIIStringEncoding];
+#define PATH "/Users/theotime/Desktop/Rsnake/rsnake/"
 //#endif
 
 #define MAX_X 40
@@ -49,9 +50,19 @@ typedef struct Snake {
 
 Snake * snake;
 
+typedef struct Input {
+	char keys[SDLK_LAST];
+	int mx, my; //mouse
+	int mbut[6]; //mouse buttons
+	char exit;
+} Input;
+
+Input kb;
+
 #include "sdl.h"
 
 void init_stuff();
+void win();
 void die_and_score();
 void quit_stuff();
 

@@ -27,7 +27,7 @@ void load_level(int lvl_nb)
 	int i, j, x, y;
 	char c;
 
-	sprintf(fname, "level-%d.lvl", lvl_nb);
+	sprintf(fname, PATH"lvls/level-%d.lvl", lvl_nb);
 	lev = fopen(fname, "r");
 	if(lev == NULL) {
 		printf("Cannot open %s\n", fname); fflush(stdout);
