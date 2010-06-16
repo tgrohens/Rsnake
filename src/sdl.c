@@ -98,17 +98,18 @@ void blit_all()
 
 void handle_input() {
 	SDL_Event event;
+	Direction ndir;
 	while(SDL_PollEvent(&event))
 	{
 		switch (event.type)
 		{
 			case SDL_KEYDOWN:
 				kb.keys[event.key.keysym.sym] = 1;
-				curDir =kb.keys[SDLK_UP]?UP:
+				ndir = kb.keys[SDLK_UP]?UP:
 				kb.keys[SDLK_RIGHT]?RIGHT:
 				kb.keys[SDLK_DOWN]?DOWN:
 				kb.keys[SDLK_LEFT]?LEFT:
-				curDir;
+				curDir ;
 				break;
 			case SDL_KEYUP:
 				kb.keys[event.key.keysym.sym] = 0;
@@ -128,4 +129,10 @@ void handle_input() {
 				break;
 		}
 	}
+	if ((ndir == UP && curDir == DOWN) ||
+		(ndir == LEFT && curDir == RIGHT) ||
+		(ndir == DOWN && curDir == UP) ||
+		(ndir == RIGHT && curDir == LEFT)) //means it is backwards
+		return;
+	curDir = ndir;
 }

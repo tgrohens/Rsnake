@@ -30,7 +30,7 @@
 #define NXT_LVL_PTS 1000
 #define MAX_LVL 30
 
-#define BASE_FPS 20
+#define BASE_FPS 10
 
 int score;
 int cur_lvl;
@@ -38,7 +38,7 @@ int lives;
 
 int no_pop;
 
-typedef enum { UP, DOWN, RIGHT, LEFT } Direction;
+typedef enum { UP, RIGHT, DOWN, LEFT } Direction;
 Direction curDir;
 
 typedef enum { GROUND, WALL, BONUS, MALUS } Tile;

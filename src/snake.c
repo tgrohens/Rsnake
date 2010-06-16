@@ -22,7 +22,7 @@ void find_empty(unsigned *x, unsigned *y)
 
 void load_level(int lvl_nb)
 {
-	char fname[50];
+	char fname[100];
 	FILE *lev;
 	unsigned iLin, iCol, x, y;
 	char c;
@@ -102,22 +102,19 @@ void move() {
 			ny = snake->y;
 			break;
 		case LEFT:
-			nx = snake->x-1;
+			nx = (int)snake->x-1;
 			ny = snake->y;
 			break;
 		case UP:
 			nx = snake->x;
-			ny = snake->y-1;
+			ny = (int)snake->y-1;
 			break;
 		case DOWN:
 			nx = snake->x;
 			ny = snake->y+1;
 			break;
 	}
-
-	if(snake->next && snake->next->x == nx && snake->next->y == ny)
-		return; /* Impossible move */
-
+		
 	if(nx == -1) nx += MAX_LEN; if(nx == MAX_LEN) nx = 0;
 	if(ny == -1) ny += MAX_HEI; if(ny == MAX_HEI) ny = 0;
 
@@ -161,6 +158,7 @@ void loop()
 	while(!kb.keys[SDLK_ESCAPE] && !kb.exit) {
 		check_timeouts();
 		handle_events(); //handles input, then moves
+		blit_all();
 		SDL_Delay(1000/BASE_FPS);
 	}
 }
