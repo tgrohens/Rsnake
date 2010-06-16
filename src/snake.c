@@ -127,28 +127,29 @@ void move() {
 }
 
 void check_collisions() {
-	if(ground[snake->x][snake->y] == WALL)
+	int nx = snake->x, ny = snake->y;
+	if(ground[nx][ny] == WALL)
 		die_and_score();
 	
-	else if(ground[snake->x][snake->y] == BONUS) {
+	else if(ground[nx][ny] == BONUS) {
 		no_pop++;
 		score += BONUS_PTS;
-		ground[snake->x][snake->y] = GROUND;
-		timeout[snake->x][snake->y] = 0;
+		ground[nx][ny] = GROUND;
+		timeout[nx][ny] = 0;
 		
-		find_empty(&snake->x, &snake->y);
-		ground[snake->x][snake->y] = BONUS;
-		timeout[snake->x][snake->y] = rnd_max(45) + 5;
+		find_empty(&nx, &ny);
+		ground[nx][ny] = BONUS;
+		timeout[nx][ny] = rnd_max(45) + 5;
 		
-	} else if(ground[snake->x][snake->y] == MALUS) {
+	} else if(ground[nx][ny] == MALUS) {
 		no_pop += 4;
 		score -= MALUS_PTS;
-		ground[snake->x][snake->y] = GROUND;
-		timeout[snake->x][snake->y] = 0;
+		ground[nx][ny] = GROUND;
+		timeout[nx][ny] = 0;
 		
-		find_empty(&snake->x, &snake->y);
-		ground[snake->x][snake->y] = MALUS;
-		timeout[snake->x][snake->y] = rnd_max(45) + 5;
+		find_empty(&nx, &ny);
+		ground[nx][ny] = MALUS;
+		timeout[nx][ny] = rnd_max(45) + 5;
 	}
 	
 }
