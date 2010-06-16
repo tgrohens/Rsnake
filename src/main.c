@@ -28,11 +28,12 @@ void init_stuff()
 	snake->next = NULL;
 
 	score = 0;
-	cur_lvl = 1;
+	cur_lvl = 2;
 	lives = 2;
 	load_level(cur_lvl);
 
 	no_pop = 0;
+	memset(&kb, 0, sizeof(Input));
 }
 
 void win()

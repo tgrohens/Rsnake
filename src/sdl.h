@@ -12,7 +12,6 @@
 #include <SDL/SDL_ttf.h>
 
 SDL_Surface * screen;
-SDL_TimerID automove;
 
 TTF_Font * info_font;
 TTF_Font * score_font;

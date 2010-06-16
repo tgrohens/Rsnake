@@ -102,12 +102,12 @@ void move() {
 			ny = snake->y;
 			break;
 		case LEFT:
-			nx = (int)snake->x-1;
+			nx = ((int)(snake->x))-1;
 			ny = snake->y;
 			break;
 		case UP:
 			nx = snake->x;
-			ny = (int)snake->y-1;
+			ny = ((int)(snake->y))-1;
 			break;
 		case DOWN:
 			nx = snake->x;
@@ -115,8 +115,8 @@ void move() {
 			break;
 	}
 		
-	if(nx == -1) nx += MAX_LEN; if(nx == MAX_LEN) nx = 0;
-	if(ny == -1) ny += MAX_HEI; if(ny == MAX_HEI) ny = 0;
+	if(nx < 0) nx = MAX_LEN; if(nx > MAX_LEN) nx = 0;
+	if(ny < 0) ny = MAX_HEI; if(ny > MAX_HEI) ny = 0;
 
 	add_head(nx, ny);
 
@@ -167,5 +167,8 @@ void loop()
 void handle_events() {
 	handle_input();
 	move();
-	kb.keys[SDLK_UP] = kb.keys[SDLK_RIGHT] = kb.keys[SDLK_DOWN] = kb.keys[SDLK_LEFT] = 0; //we want the player to touch *again*, so we say it ain't typed.
+	kb.keys[SDLK_UP] =
+	kb.keys[SDLK_RIGHT] =
+	kb.keys[SDLK_DOWN] =
+	kb.keys[SDLK_LEFT] = 0; 
 }
